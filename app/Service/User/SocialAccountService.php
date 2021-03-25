@@ -5,8 +5,8 @@ namespace App\Service\User;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Entity\UserSocialAccount;
 use App\Domain\User\Entity\VO\SocialProvider;
-use App\Domain\User\Repository\IUserRepository;
-use App\Domain\User\Repository\IUserSocialAccountRepository;
+use App\Domain\User\Repository\UserRepository;
+use App\Domain\User\Repository\UserSocialAccountRepository;
 use App\Helpers\AppHelper;
 use App\Service\User\Social\SocialAccount;
 use App\Service\User\Social\SocialAccountManager;
@@ -36,14 +36,14 @@ class SocialAccountService
     ];
 
     /**
-     * @var IUserSocialAccountRepository Репозиторий соц. аккаунтов.
+     * @var UserSocialAccountRepository Репозиторий соц. аккаунтов.
      */
-    private IUserSocialAccountRepository $userSocialAccountRepository;
+    private UserSocialAccountRepository $userSocialAccountRepository;
 
     /**
-     * @var IUserRepository Репозиторий пользователей.
+     * @var UserRepository Репозиторий пользователей.
      */
-    private IUserRepository $userRepository;
+    private UserRepository $userRepository;
 
     /**
      * @var UserService Сервис пользователей.
@@ -63,15 +63,15 @@ class SocialAccountService
     /**
      * Конструктор сервиса соц. аккаунтов.
      *
-     * @param IUserSocialAccountRepository $userSocialAccountRepository
-     * @param IUserRepository              $userRepository
+     * @param UserSocialAccountRepository $userSocialAccountRepository
+     * @param UserRepository              $userRepository
      * @param UserService                  $userService
      * @param PasswordReminderService      $passwordService
      * @param EntityManagerInterface       $entityManager
      */
     public function __construct(
-        IUserSocialAccountRepository $userSocialAccountRepository,
-        IUserRepository $userRepository,
+        UserSocialAccountRepository $userSocialAccountRepository,
+        UserRepository $userRepository,
         UserService $userService,
         PasswordReminderService $passwordService,
         EntityManagerInterface $entityManager

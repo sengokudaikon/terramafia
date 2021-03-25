@@ -4,7 +4,7 @@ namespace App\Domain\User\Repository;
 
 use App\Domain\User\Entity\UserPersonal;
 
-class UserPersonalRepository extends BaseRepository implements IUserPersonalRepository
+class UserPersonalRepository extends BaseRepository
 {
     public function add(UserPersonal $userPersonal): void
     {

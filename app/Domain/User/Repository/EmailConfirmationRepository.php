@@ -9,7 +9,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 
-class EmailConfirmationRepository extends BaseRepository implements IEmailConfirmationRepository
+class EmailConfirmationRepository extends BaseRepository
 {
     /**
      * Добавление нового токена подтверждения.
@@ -80,7 +80,7 @@ class EmailConfirmationRepository extends BaseRepository implements IEmailConfir
                 $this->remove($emailConfirmationToken);
             }
         } else {
-            throw new EntityNotFoundException("Пользователь {$user->getIntId()} не имеет токенов подтверждения почты");
+            throw new EntityNotFoundException("Пользователь {$user->getExternalisedUuid()} не имеет токенов подтверждения почты");
         }
     }
 

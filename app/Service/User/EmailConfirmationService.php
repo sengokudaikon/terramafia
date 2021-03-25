@@ -4,8 +4,8 @@ namespace App\Service\User;
 
 use App\Domain\User\Entity\EmailConfirmationToken;
 use App\Domain\User\Entity\User;
-use App\Domain\User\Repository\IEmailConfirmationRepository;
-use App\Domain\User\Repository\IUserRepository;
+use App\Domain\User\Repository\EmailConfirmationRepository;
+use App\Domain\User\Repository\UserRepository;
 use App\Helpers\DateTimeUtil;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,14 +23,14 @@ class EmailConfirmationService
     const TOKEN_LIFETIME = 720;
 
     /**
-     * @var IUserRepository Репозиторий пользователей.
+     * @var UserRepository Репозиторий пользователей.
      */
-    private IUserRepository $userRepository;
+    private UserRepository $userRepository;
 
     /**
-     * @var IEmailConfirmationRepository Репозиторий токенов подтверждения email пользователей.
+     * @var EmailConfirmationRepository Репозиторий токенов подтверждения email пользователей.
      */
-    private IEmailConfirmationRepository $emailConfirmationRepository;
+    private EmailConfirmationRepository $emailConfirmationRepository;
 
     /**
      * @var EntityManagerInterface Менеджер сущностей.
@@ -40,13 +40,13 @@ class EmailConfirmationService
     /**
      * Конструктор сервиса подтвержденных email пользователей.
      *
-     * @param IUserRepository $userRepository
-     * @param IEmailConfirmationRepository $emailConfirmationRepository
+     * @param UserRepository $userRepository
+     * @param EmailConfirmationRepository $emailConfirmationRepository
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        IUserRepository $userRepository,
-        IEmailConfirmationRepository $emailConfirmationRepository,
+        UserRepository $userRepository,
+        EmailConfirmationRepository $emailConfirmationRepository,
         EntityManagerInterface $entityManager
     ) {
         $this->userRepository = $userRepository;

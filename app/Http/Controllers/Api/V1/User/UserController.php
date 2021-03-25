@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Api\V1\User;
 
 use App\Domain\User\Entity\User;
 use App\Helpers\DI;
@@ -114,6 +114,6 @@ class UserController extends AbstractController implements IUserController, IUse
             $request->get('gender')
         );
 
-        $this->successResponseWithoutContent();
+        return $this->successResponseWithoutContent();
     }
 }

@@ -11,7 +11,6 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Пользователь.
@@ -20,7 +19,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     repositoryClass="App\Domain\User\Repository\UserRepository"
  * )
  * @ORM\Table(name="users_user")
- * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @package App\Domain\User\Entity
  */
 class User implements JWTSubject, Authenticatable
@@ -42,18 +40,18 @@ class User implements JWTSubject, Authenticatable
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    private int $intId;
+    private int $id;
 
     /**
      * @var UuidInterface Уникальный идентификатор.
      *
      * @ORM\Column(type="guid", length=36, unique=true)
      */
-    protected UuidInterface $id;
+    protected UuidInterface $uuid;
 
     public function getUuid(): UuidInterface
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     public function getExternalisedUuid(): string
@@ -63,7 +61,7 @@ class User implements JWTSubject, Authenticatable
 
     protected function identify(): void
     {
-        $this->id = Uuid::uuid4();
+        $this->uuid = Uuid::uuid4();
     }
 
     /**
@@ -90,7 +88,7 @@ class User implements JWTSubject, Authenticatable
     /**
      * @var Role Роль.
      *
-     * @ORM\Column(type="App\Domain\User\Entity\VO\Role")
+     * @ORM\Column(type="role")
      */
     private Role $role;
 
@@ -264,15 +262,9 @@ class User implements JWTSubject, Authenticatable
         return end($fullClassName);
     }
 
-    public function getIntId(): int
+    public function getId(): int
     {
-        return $this->intId;
-    }
-
-    public function setIntId(int $intId): self
-    {
-        $this->intId = $intId;
-        return $this;
+        return $this->id;
     }
 
     /**
@@ -319,7 +311,7 @@ class User implements JWTSubject, Authenticatable
      */
     public function getJWTIdentifier(): int
     {
-        return $this->getIntId();
+        return $this->getId();
     }
 
     /**
