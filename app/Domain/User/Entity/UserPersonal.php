@@ -72,7 +72,7 @@ class UserPersonal
      * @var Gender|null Пол.
      *
      * @ORM\Column(
-     *     type="App\Domain\User\Entity\VO\Gender"
+     *     type="gender"
      * )
      */
     private ?Gender $gender;

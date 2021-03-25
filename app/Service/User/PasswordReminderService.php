@@ -4,8 +4,8 @@ namespace App\Service\User;
 
 use App\Domain\User\Entity\PasswordResetToken;
 use App\Domain\User\Entity\User;
-use App\Domain\User\Repository\IPasswordResetTokenRepository;
-use App\Domain\User\Repository\IUserRepository;
+use App\Domain\User\Repository\PasswordResetTokenRepository;
+use App\Domain\User\Repository\UserRepository;
 use App\Event\PasswordResetTokenCreatedEvent;
 use App\Exceptions\UserNotFoundException;
 use App\Helpers\DateTimeUtil;
@@ -22,9 +22,9 @@ class PasswordReminderService
     const TOKEN_LIFETIME = 720;
 
     /**
-     * @var IPasswordResetTokenRepository Репозиторий восстановления пароля.
+     * @var PasswordResetTokenRepository Репозиторий восстановления пароля.
      */
-    private IPasswordResetTokenRepository $passwordResetTokenRepository;
+    private PasswordResetTokenRepository $passwordResetTokenRepository;
 
     /**
      * @var EntityManagerInterface Менеджер сущностей.
@@ -32,21 +32,21 @@ class PasswordReminderService
     private EntityManagerInterface $entityManager;
 
     /**
-     * @var IUserRepository Репозиторий пользователей.
+     * @var UserRepository Репозиторий пользователей.
      */
-    private IUserRepository $userRepository;
+    private UserRepository $userRepository;
 
     /**
      * PasswordReminderService constructor.
      *
-     * @param IPasswordResetTokenRepository $passwordResetTokenRepository
+     * @param PasswordResetTokenRepository $passwordResetTokenRepository
      * @param EntityManagerInterface $entityManager
-     * @param IUserRepository $userRepository
+     * @param UserRepository $userRepository
      */
     public function __construct(
-        IPasswordResetTokenRepository $passwordResetTokenRepository,
+        PasswordResetTokenRepository $passwordResetTokenRepository,
         EntityManagerInterface $entityManager,
-        IUserRepository $userRepository
+        UserRepository $userRepository
     ) {
         $this->passwordResetTokenRepository = $passwordResetTokenRepository;
         $this->entityManager = $entityManager;

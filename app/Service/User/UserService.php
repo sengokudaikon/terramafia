@@ -5,7 +5,7 @@ namespace App\Service\User;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Entity\UserPersonal;
 use App\Domain\User\Entity\VO\Role;
-use App\Domain\User\Repository\IUserRepository;
+use App\Domain\User\Repository\UserRepository;
 use App\Event\UserCreatedEvent;
 use App\Exceptions\EmailAlreadyExistsException;
 use App\Exceptions\InvalidCredentialsException;
@@ -19,9 +19,9 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class UserService
 {
     /**
-     * @var IUserRepository Репозиторий пользователя.
+     * @var UserRepository Репозиторий пользователя.
      */
-    private IUserRepository $userRepository;
+    private UserRepository $userRepository;
 
     /**
      * @var PasswordReminderService Сервис напоминания пароля.
@@ -41,13 +41,13 @@ class UserService
     /**
      * Конструктор сервиса пользователя.
      *
-     * @param IUserRepository          $userRepository
+     * @param UserRepository          $userRepository
      * @param PasswordReminderService  $passwordReminderService
      * @param SocialAccountService     $socialAccountService
      * @param EmailConfirmationService $emailConfirmationService
      */
     public function __construct(
-        IUserRepository $userRepository,
+        UserRepository $userRepository,
         PasswordReminderService $passwordReminderService,
         SocialAccountService $socialAccountService,
         EmailConfirmationService $emailConfirmationService
@@ -91,7 +91,7 @@ class UserService
             $this->userRepository->add($user);
         }
 
-        event(new UserCreatedEvent($user->getIntId()));
+        event(new UserCreatedEvent($user->getId()));
 
         return $user;
     }
@@ -108,6 +108,8 @@ class UserService
     {
         $user->setPlayerName($playerName);
         $this->userRepository->update($user);
+
+        return $user;
     }
 
     /**

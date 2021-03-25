@@ -6,7 +6,7 @@ use App\Domain\User\Entity\User;
 use App\Exceptions\UserNotFoundException;
 use App\Helpers\UuidExternaliser;
 
-class UserRepository extends BaseRepository implements IUserRepository
+class UserRepository extends BaseRepository
 {
     /**
      * @var UuidExternaliser

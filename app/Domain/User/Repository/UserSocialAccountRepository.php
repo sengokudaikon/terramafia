@@ -5,7 +5,7 @@ namespace App\Domain\User\Repository;
 use App\Domain\User\Entity\UserSocialAccount;
 use App\Exceptions\UserNotFoundException;
 
-class UserSocialAccountRepository extends BaseRepository implements IUserSocialAccountRepository
+class UserSocialAccountRepository extends BaseRepository
 {
     /**
      * Добавляет новый соц. аккаунт пользователя.

@@ -7,7 +7,7 @@ use App\Domain\User\Entity\User;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
 
-class PasswordResetTokenRepository extends BaseRepository implements IPasswordResetTokenRepository
+class PasswordResetTokenRepository extends BaseRepository
 {
     /**
      * Добавление нового токена восстановления.
