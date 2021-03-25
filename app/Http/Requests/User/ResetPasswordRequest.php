@@ -39,5 +39,4 @@ class ResetPasswordRequest extends FormRequest
             'password' => 'required|min:5'
         ];
     }
-
 }

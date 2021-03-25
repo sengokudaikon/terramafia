@@ -29,7 +29,7 @@ class Role
     public function __construct(string $value)
     {
         if (!in_array($value, self::getValues())) {
-            throw new InvalidUserRoleException;
+            throw new InvalidUserRoleException();
         }
 
         $this->value = $value;

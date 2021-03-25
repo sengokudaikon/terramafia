@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
 
+use DateInterval;
 use DateTimeImmutable;
 use InvalidArgumentException;
-use DateInterval;
 
 /**
  * Вспомогательный класс для работы с датами и временем.
@@ -39,6 +39,6 @@ class DateTimeUtil
      */
     public static function currentDate(): DateTimeImmutable
     {
-        return new DateTimeImmutable;
+        return new DateTimeImmutable();
     }
 }

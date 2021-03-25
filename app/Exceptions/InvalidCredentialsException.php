@@ -14,5 +14,4 @@ class InvalidCredentialsException extends RuntimeException
             Response::HTTP_UNAUTHORIZED
         );
     }
-
 }

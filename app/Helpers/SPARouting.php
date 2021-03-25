@@ -12,29 +12,29 @@ class SPARouting
     /**
      * @var string URL для сброса пароля аккаунта.
      */
-    const FRONTEND_RESET_PASSWORD_URL = '/reset_password';
+    public const FRONTEND_RESET_PASSWORD_URL = '/reset_password';
 
     /**
      * @var string URL для подтверждения email.
      */
-    const FRONTEND_CONFIRM_EMAIL_URL = '/confirm_email';
+    public const FRONTEND_CONFIRM_EMAIL_URL = '/confirm_email';
 
     /**
      * @var string URL списка проектов.
      */
-    const FRONTEND_LIST_PROJECTS = '/projects';
+    public const FRONTEND_LIST_PROJECTS = '/projects';
 
     /**
      * @var string URL списка задач
      */
-    const FRONTEND_BOARD = '/board';
+    public const FRONTEND_BOARD = '/board';
 
     /**
      * @var string URL команды.
      */
-    const FRONTEND_TEAM = '/team';
+    public const FRONTEND_TEAM = '/team';
 
-    const FRONTEND_VERIFY_REQUESTS = '/verify-requests/profile';
+    public const FRONTEND_VERIFY_REQUESTS = '/verify-requests/profile';
 
     /**
      * Возвращает URL для заданного раздела frontend приложения.

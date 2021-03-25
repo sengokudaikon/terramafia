@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\User;
 
-use Elegant\Sanitizer\Laravel\SanitizesInput;
 use App\Http\Requests\FormRequest;
+use Elegant\Sanitizer\Laravel\SanitizesInput;
 
 /**
  * Класс валидации запроса восстановления пароля аккаунта пользователя.
@@ -29,7 +29,7 @@ class ForgotPasswordRequest extends FormRequest
     /**
      * Правила валидации.
      *
-     * @return array|string[]
+     * @return string[]
      */
     public function rules()
     {

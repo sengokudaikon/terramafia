@@ -90,7 +90,7 @@ class UserResource extends JsonResource
             'email' => $this->getEmail(),
             'firstName' => $personalInfo ? null : $personalInfo->getFirstName(),
             'lastName' => $personalInfo ? null : $personalInfo->getLastName(),
-            'patronymic' => $personalInfo? null : $personalInfo->getPatronymic(),
+            'patronymic' => $personalInfo ? null : $personalInfo->getPatronymic(),
             'birthday' => $personalInfo ? null : $personalInfo->getBirthday()->format('Y-m-d'),
             'gender' => $personalInfo ? null : $personalInfo->getGender()->__toString(),
         ];

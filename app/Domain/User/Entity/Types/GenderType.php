@@ -44,7 +44,8 @@ class GenderType extends Type
                     'Invalid conversion value "%s", should be "%s"',
                     is_object($value) ? get_class($value) : gettype($value),
                     Gender::class
-                ));
+                )
+            );
         }
 
         return (string) $value;

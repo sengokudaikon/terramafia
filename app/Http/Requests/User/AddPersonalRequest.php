@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Requests\User;
+
 use App\Domain\User\Entity\VO\Gender;
 use App\Http\Requests\FormRequest;
 

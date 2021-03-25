@@ -20,7 +20,7 @@ class EmailConfirmationService
     /**
      * @var int Время жизни токена подтверждения - 12 часов (в минутах).
      */
-    const TOKEN_LIFETIME = 720;
+    public const TOKEN_LIFETIME = 720;
 
     /**
      * @var UserRepository Репозиторий пользователей.
@@ -86,7 +86,7 @@ class EmailConfirmationService
         $emailConfirmationToken = $this->getToken($token);
         $user = $emailConfirmationToken->getUser();
 
-        if ($user->getActivity()){
+        if ($user->getActivity()) {
             $user->setEmail($emailConfirmationToken->getEmail())
                 ->getActivity()
                 ->verifyEmail();
@@ -114,7 +114,7 @@ class EmailConfirmationService
         $emailConfirmationToken = $this->emailConfirmationRepository->findByToken($token);
 
         if (is_null($emailConfirmationToken) || $this->isExpiredToken($emailConfirmationToken)) {
-            throw new TokenExpiredException;
+            throw new TokenExpiredException();
         }
 
         return $emailConfirmationToken;
@@ -130,7 +130,7 @@ class EmailConfirmationService
      */
     private function isExpiredToken(EmailConfirmationToken $emailConfirmationToken): bool
     {
-        return (new DateTimeImmutable)
+        return (new DateTimeImmutable())
                 ->diff(DateTimeUtil::addMinutes($emailConfirmationToken->getCreatedAt(), self::TOKEN_LIFETIME))
                 ->invert !== 0;
     }

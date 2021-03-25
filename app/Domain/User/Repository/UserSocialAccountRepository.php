@@ -50,7 +50,7 @@ class UserSocialAccountRepository extends BaseRepository
             ->from(UserSocialAccount::class, 'user')
             ->where('provider.name = :providerName')
             ->andWhere('provider.accountId = :providerId')
-            ->setParameter('providerName',$providerName)
+            ->setParameter('providerName', $providerName)
             ->setParameter('providerId', $providerId)
             ->getQuery();
 

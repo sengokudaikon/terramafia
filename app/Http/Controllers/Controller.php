@@ -59,7 +59,7 @@ abstract class Controller extends BaseController
      *
      * @return JsonResponse
      */
-    protected function successResponseCreated(string $uuid):JsonResponse
+    protected function successResponseCreated(string $uuid): JsonResponse
     {
         return Response::successResponse(null, ['uuid' => $uuid], Response::HTTP_CREATED);
     }

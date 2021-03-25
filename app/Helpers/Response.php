@@ -15,58 +15,58 @@ class Response
     /**
      * @var int Ответ "Успешно".
      */
-    const HTTP_SUCCESS = 200;
+    public const HTTP_SUCCESS = 200;
 
     /**
      * @var int "Создано". Запрос успешно выполнен и в результате был создан ресурс.
      */
-    const HTTP_CREATED = 201;
+    public const HTTP_CREATED = 201;
 
     /**
      * @var int "Нет содержимого". Нет содержимого для ответа на запрос.
      */
-    const HTTP_NO_CONTENT = 204;
+    public const HTTP_NO_CONTENT = 204;
 
     /**
      * @var int "Плохой запрос".
      * Этот ответ означает, что сервер не понимает запрос из-за неверного синтаксиса.
      */
-    const HTTP_BAD_REQUEST = 400;
+    public const HTTP_BAD_REQUEST = 400;
 
     /**
      * @var int "Неавторизовано".
      * Для получения запрашиваемого ответа нужна аутентификация.
      */
-    const HTTP_UNAUTHORIZED = 401;
+    public const HTTP_UNAUTHORIZED = 401;
 
     /**
      * @var int "Запрещено". У клиента нет прав доступа к содержимому,
      * поэтому сервер отказывается дать надлежащий ответ.
      */
-    const HTTP_FORBIDDEN = 403;
+    public const HTTP_FORBIDDEN = 403;
 
     /**
      * @var int "Не найден". Сервер не может найти запрашиваемый ресурс.
      */
-    const HTTP_NOT_FOUND = 404;
+    public const HTTP_NOT_FOUND = 404;
 
     /**
      * @var int Этот ответ отсылается, когда запрос конфликтует
      * с текущим состоянием сервера.
      */
-    const HTTP_CONFLICT = 409;
+    public const HTTP_CONFLICT = 409;
 
     /**
      * @var int Cинтаксис запроса является правильным,
      * но серверу не удалось обработать инструкции содержимого.
      */
-    const HTTP_UNPROCESSABLE_ENTITY = 422;
+    public const HTTP_UNPROCESSABLE_ENTITY = 422;
 
     /**
      * @var int "Внутренняя ошибка сервера".
      * Сервер столкнулся с ситуацией, которую он не знает как обработать.
      */
-    const HTTP_INTERNAL_SERVER_ERROR = 500;
+    public const HTTP_INTERNAL_SERVER_ERROR = 500;
 
     /**
      * Успешный ответ API.

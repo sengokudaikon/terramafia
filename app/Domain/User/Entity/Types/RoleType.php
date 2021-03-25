@@ -2,8 +2,8 @@
 
 namespace App\Domain\User\Entity\Types;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
 use App\Domain\User\Entity\VO\Role;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
 
@@ -44,7 +44,8 @@ class RoleType extends Type
                     'Invalid conversion value "%s", should be "%s"',
                     is_object($value) ? get_class($value) : gettype($value),
                     Role::class
-                ));
+                )
+            );
         }
 
         return (string) $value;

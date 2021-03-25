@@ -37,7 +37,8 @@ class UuidExternaliser
                         '0',
                         STR_PAD_LEFT
                     )
-                ));
+                )
+            );
         } catch (Throwable $e) {
             return null;
         }

@@ -102,14 +102,14 @@ class UserActivity
 
     public function block(): void
     {
-        if(!$this->isBanned){
+        if (!$this->isBanned) {
             $this->isBanned = true;
         }
     }
 
     public function unblock(): void
     {
-        if($this->isBanned) {
+        if ($this->isBanned) {
             $this->isBanned = false;
         }
     }
@@ -121,7 +121,7 @@ class UserActivity
 
     public function confirm(): void
     {
-        if(!$this->isConfirmed) {
+        if (!$this->isConfirmed) {
             $this->isConfirmed = true;
             $this->onUpdated();
         }
@@ -134,8 +134,7 @@ class UserActivity
 
     public function verifyEmail(): void
     {
-        if(!$this->emailVerified)
-        {
+        if (!$this->emailVerified) {
             $this->emailVerified = true;
             $this->onUpdated();
         }

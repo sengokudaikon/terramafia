@@ -19,7 +19,7 @@ class PasswordReminderService
     /**
      * @var int Время жизни токена восстановления пароля - 12 часов (в минутах).
      */
-    const TOKEN_LIFETIME = 720;
+    public const TOKEN_LIFETIME = 720;
 
     /**
      * @var PasswordResetTokenRepository Репозиторий восстановления пароля.
@@ -66,16 +66,16 @@ class PasswordReminderService
         $user = $this->userRepository->findUserByEmail($email);
 
         if (!$user) {
-            throw new UserNotFoundException;
+            throw new UserNotFoundException();
         }
 
         $passwordReset = $this->makeToken($user);
 
         event(new PasswordResetTokenCreatedEvent(
-                  $user->getUuid()->toString(),
-                  $passwordReset->getToken(),
-                  $passwordReset->getCreatedAt()
-              ));
+            $user->getUuid()->toString(),
+            $passwordReset->getToken(),
+            $passwordReset->getCreatedAt()
+        ));
     }
 
     /**
