@@ -4,13 +4,13 @@ namespace App\Domain\User\Entity;
 
 use App\Domain\User\Entity\VO\Role;
 use App\Helpers\UuidExternaliser;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * Пользователь.
@@ -26,12 +26,12 @@ class User implements JWTSubject, Authenticatable
     /**
      * @var string Название поля с идентификатором пользователя.
      */
-    const ID_FIELD_NAME = 'id';
+    public const ID_FIELD_NAME = 'id';
 
     /**
      * @var string Название поля с remember токеном.
      */
-    const REMEMBER_TOKEN_FIELD_NAME = 'remember_token';
+    public const REMEMBER_TOKEN_FIELD_NAME = 'remember_token';
 
     /**
      * @var int Идентификатор.
@@ -154,8 +154,8 @@ class User implements JWTSubject, Authenticatable
         $this->email = $email;
         $this->role = $role;
 
-        $this->socialAccounts = new ArrayCollection;
-        $this->permissions = new ArrayCollection;
+        $this->socialAccounts = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
     }
 
 //    public static function signUp(string $playerName, string $email, string $password,  Role $role): User

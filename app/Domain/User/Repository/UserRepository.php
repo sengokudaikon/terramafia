@@ -63,7 +63,8 @@ class UserRepository extends BaseRepository
                 [
                     'email' => mb_strtolower($email),
                     'user_id' => $user_id
-                ])
+                ]
+            )
             ->getQuery()
             ->getSingleScalarResult();
 

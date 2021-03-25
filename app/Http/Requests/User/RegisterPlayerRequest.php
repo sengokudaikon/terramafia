@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Requests\User;
+
 use App\Http\Requests\FormRequest;
 use Elegant\Sanitizer\Laravel\SanitizesInput;
 

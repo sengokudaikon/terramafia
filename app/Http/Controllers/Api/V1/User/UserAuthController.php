@@ -53,7 +53,8 @@ class UserAuthController extends AbstractController implements IUserAuthControll
             sprintf(
                 __('users.auth.password.forgot.success'),
                 $request->input('email')
-            ));
+            )
+        );
     }
 
     public function resetPassword(ResetPasswordRequest $request, UserService $userService): JsonResponse

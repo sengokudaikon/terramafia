@@ -11,9 +11,9 @@ use App\Exceptions\EmailAlreadyExistsException;
 use App\Exceptions\InvalidCredentialsException;
 use App\Exceptions\InvalidPasswordException;
 use App\Exceptions\UserNotFoundException;
+use App\Helpers\SecurityHashHelper;
 use App\Service\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Helpers\SecurityHashHelper;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService
@@ -76,7 +76,7 @@ class UserService
         if ($user) {
             $user->setPassword($hashedPassword);
             $this->userRepository->update($user);
-        }  elseif (!$user->getActivity()){
+        } elseif (!$user->getActivity()) {
             $user->activate();
         } else {
             $user = new User(
@@ -163,7 +163,7 @@ class UserService
         );
 
         if (!$token) {
-            throw new InvalidCredentialsException;
+            throw new InvalidCredentialsException();
         }
 
         return $token;
@@ -266,7 +266,7 @@ class UserService
         $user = $this->userRepository->findUserByUuid($userId);
 
         if (!Hash::check($currentPassword, $user->getPassword())) {
-            throw new InvalidPasswordException;
+            throw new InvalidPasswordException();
         }
 
         $user->setPassword(self::hashPassword($newPassword));
@@ -290,7 +290,7 @@ class UserService
         $user = $this->userRepository->findUserByUuid($userId);
 
         if (!Hash::check($currentPassword, $user->getPassword())) {
-            throw new InvalidPasswordException;
+            throw new InvalidPasswordException();
         }
 
         if (!$this->canEmailRegister($newEmail)) {

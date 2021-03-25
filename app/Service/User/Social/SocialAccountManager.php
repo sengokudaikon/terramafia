@@ -2,8 +2,8 @@
 
 namespace App\Service\User\Social;
 
-use Laravel\Socialite\Facades\Socialite;
 use App\Domain\User\Entity\VO\SocialProvider;
+use Laravel\Socialite\Facades\Socialite;
 use RuntimeException;
 
 /**

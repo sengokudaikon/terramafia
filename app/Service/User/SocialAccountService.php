@@ -20,7 +20,7 @@ class SocialAccountService
     /**
      * @var array Карта запрашиваемых прав для приложений.
      */
-    const PROVIDER_SCOPE_MAP = [
+    public const PROVIDER_SCOPE_MAP = [
         SocialProvider::VKONTAKTE => [
             'email'
         ],

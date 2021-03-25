@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\User;
 
-use Elegant\Sanitizer\Laravel\SanitizesInput;
 use App\Http\Requests\FormRequest;
+use Elegant\Sanitizer\Laravel\SanitizesInput;
 
 /**
  * Класс валидации запроса для аутентификации пользователя.
