@@ -23,4 +23,15 @@ class UserPermissionRepository extends BaseRepository implements IUserPermission
         $this->entityManager->remove($userPermission);
         $this->entityManager->flush($userPermission);
     }
+
+    public function findAll(): array
+    {
+        $queryBuilder = $this->entityManager
+            ->createQueryBuilder();
+
+        $queryBuilder->select('permission')
+            ->from(UserPermission::class, 'permission');
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
 }
