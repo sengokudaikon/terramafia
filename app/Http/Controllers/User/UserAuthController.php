@@ -6,19 +6,17 @@ use App\Domain\User\Entity\User;
 use App\Helpers\Response;
 use App\Http\Controllers\Controller as AbstractController;
 use App\Http\Requests\User\AuthenticateUserRequest;
-use App\Http\Requests\User\ExternalAuthRequest;
 use App\Http\Requests\User\ForgotPasswordRequest;
 use App\Http\Requests\User\ResetPasswordRequest;
 use App\Service\Auth;
 use App\Service\User\PasswordReminderService;
-use App\Service\User\SocialAccountService;
 use App\Service\User\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cookie;
 
 class UserAuthController extends AbstractController implements IUserAuthController
 {
-    public function authenticate(UserService $userService, AuthenticateUserRequest $request): JsonResponse
+    public function login(UserService $userService, AuthenticateUserRequest $request): JsonResponse
     {
         $token = $userService->auth(
             $request->input('email'),
@@ -66,21 +64,5 @@ class UserAuthController extends AbstractController implements IUserAuthControll
         );
 
         return $this->successResponse(__('users.auth.password.reset.success'));
-    }
-
-    public function getAuthUrlForExternalService(
-        ExternalAuthRequest $request,
-        SocialAccountService $socialAccountService
-    ): JsonResponse {
-        $redirectUrl = $socialAccountService->getAuthUrl($request->get('provider'), $request->get('state'));
-
-        return $this->successResponse(null, ['redirectUrl' => $redirectUrl]);
-    }
-
-    public function handleProviderCallback(string $provider, UserService $userService): JsonResponse
-    {
-        $token = $userService->authWithSocialProvider($provider);
-
-        return $this->respondWithToken($token, __('users.auth.login.success'));
     }
 }

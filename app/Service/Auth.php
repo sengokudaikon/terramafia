@@ -13,6 +13,6 @@ class Auth extends BaseAuth
      */
     public static function uuid(): ?string
     {
-        return Auth::check() ? self::user()->getUuid()->toString() : null;
+        return self::check() ? self::user()->getExternalisedUuid() : null;
     }
 }

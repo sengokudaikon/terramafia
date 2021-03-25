@@ -55,13 +55,13 @@ abstract class Controller extends BaseController
     /**
      * Успешный ответ API с айди созданной сущности с кодом 201.
      *
-     * @param string $id
+     * @param string $uuid
      *
      * @return JsonResponse
      */
-    protected function successResponseCreated(string $id):JsonResponse
+    protected function successResponseCreated(string $uuid):JsonResponse
     {
-        return Response::successResponse(null, ['id' => $id], Response::HTTP_CREATED);
+        return Response::successResponse(null, ['uuid' => $uuid], Response::HTTP_CREATED);
     }
 
     /**

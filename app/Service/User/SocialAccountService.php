@@ -173,7 +173,7 @@ class SocialAccountService
         $user = $this->userService->addPlayer(
             $socialAccount->getEmail(),
             Str::random(20),
-            '',
+            $socialAccount->getName(),
         );
 
         if ($socialAccount->getEmail()) {
