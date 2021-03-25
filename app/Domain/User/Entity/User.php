@@ -7,7 +7,7 @@ use App\Helpers\UuidExternaliser;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Contracts\Auth\Authenticatable as AuthContract;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +23,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @package App\Domain\User\Entity
  */
-class User implements JWTSubject, AuthContract
+class User implements JWTSubject, Authenticatable
 {
     /**
      * @var string Название поля с идентификатором пользователя.
@@ -160,10 +160,10 @@ class User implements JWTSubject, AuthContract
         $this->permissions = new ArrayCollection;
     }
 
-    public static function signUp(string $playerName, string $email, string $password,  Role $role): User
-    {
-        return new self($playerName, $email, $password, $role);
-    }
+//    public static function signUp(string $playerName, string $email, string $password,  Role $role): User
+//    {
+//        return new self($playerName, $email, $password, $role);
+//    }
 
     public function activate(): void
     {
@@ -176,6 +176,18 @@ class User implements JWTSubject, AuthContract
     public function getPlayerName(): ?string
     {
         return $this->playerName;
+    }
+
+    /**
+     * @param string|null $playerName
+     *
+     * @return User
+     */
+    public function setPlayerName(?string $playerName): self
+    {
+        $this->playerName = $playerName;
+
+        return $this;
     }
 
     /**

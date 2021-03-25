@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\User;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\FormRequest;
 
 /**
  * Класс валидации запроса для установки нового пароля пользователя.

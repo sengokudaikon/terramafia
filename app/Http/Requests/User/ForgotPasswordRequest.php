@@ -3,7 +3,7 @@
 namespace App\Http\Requests\User;
 
 use Elegant\Sanitizer\Laravel\SanitizesInput;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\FormRequest;
 
 /**
  * Класс валидации запроса восстановления пароля аккаунта пользователя.

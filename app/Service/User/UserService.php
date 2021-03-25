@@ -97,6 +97,20 @@ class UserService
     }
 
     /**
+     * Обновление никнейма игрока.
+     *
+     * @param User   $user
+     * @param string $playerName
+     *
+     * @return User
+     */
+    public function updatePlayer(User $user, string $playerName): User
+    {
+        $user->setPlayerName($playerName);
+        $this->userRepository->update($user);
+    }
+
+    /**
      * Поиск пользователя по email.
      *
      * @param string $email
@@ -319,5 +333,13 @@ class UserService
     {
         $user->addPersonal($personalData);
         $this->userRepository->update($user);
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getAll(): array
+    {
+        return $this->userRepository->findAllUsers();
     }
 }
