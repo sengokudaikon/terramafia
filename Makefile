@@ -40,10 +40,7 @@ refresh:
 	docker-compose exec app rm -rf public/storage
 	docker-compose exec app php artisan storage:link
 linter:
-	docker-compose exec app php ./vendor/bin/phpcbf --standard=PSR2 app/
-	docker-compose exec app php ./vendor/bin/phpcbf --standard=PSR2 Modules/
-	docker-compose exec app php ./vendor/bin/phpcs --extensions=php --runtime-set ignore_warnings_on_exit true --standard=PSR2 app
-	docker-compose exec app php ./vendor/bin/phpcs --extensions=php --runtime-set ignore_warnings_on_exit true --standard=PSR2 Modules
+	docker-compose exec app php ./vendor/bin/ecs check app --fix
 production:
 	docker-compose down
 	docker-compose build
