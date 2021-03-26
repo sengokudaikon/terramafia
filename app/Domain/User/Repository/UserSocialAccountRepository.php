@@ -4,6 +4,8 @@ namespace App\Domain\User\Repository;
 
 use App\Domain\User\Entity\UserSocialAccount;
 use App\Exceptions\UserNotFoundException;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 
 class UserSocialAccountRepository extends BaseRepository
 {
@@ -12,25 +14,25 @@ class UserSocialAccountRepository extends BaseRepository
      *
      * @param UserSocialAccount $socialAccount
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     * @throws ORMException
+     * @throws ORMInvalidArgumentException
      */
     public function add(UserSocialAccount $socialAccount): void
     {
-        $this->entityManager->persist($socialAccount);
-        $this->entityManager->flush($socialAccount);
+        $this->getEntityManager()->persist($socialAccount);
+        $this->getEntityManager()->flush($socialAccount);
     }
 
     public function update(UserSocialAccount $socialAccount): void
     {
-        $this->entityManager->persist($socialAccount);
-        $this->entityManager->flush($socialAccount);
+        $this->getEntityManager()->persist($socialAccount);
+        $this->getEntityManager()->flush($socialAccount);
     }
 
     public function remove(UserSocialAccount $socialAccount): void
     {
-        $this->entityManager->remove($socialAccount);
-        $this->entityManager->flush($socialAccount);
+        $this->getEntityManager()->remove($socialAccount);
+        $this->getEntityManager()->flush($socialAccount);
     }
 
     /**
@@ -38,11 +40,14 @@ class UserSocialAccountRepository extends BaseRepository
      *
      * @param string $providerName
      * @param string $providerId
+     *
      * @return UserSocialAccount|null
+     * @throws UserNotFoundException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findAccountByProvider(string $providerName, string $providerId): ?UserSocialAccount
     {
-        $queryBuilder = $this->entityManager
+        $queryBuilder = $this->getEntityManager()
             ->createQueryBuilder();
 
         $query = $queryBuilder

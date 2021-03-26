@@ -16,7 +16,6 @@ class FormRequest extends \Illuminate\Foundation\Http\FormRequest
 {
     /**
      * @param Validator $validator
-     * @throws ValidationException
      */
     protected function failedValidation(Validator $validator)
     {

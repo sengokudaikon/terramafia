@@ -32,7 +32,7 @@ class ChangeEmailRequest extends FormRequest
      *
      * @return string[]
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'currentPassword' => 'bail|required|string',

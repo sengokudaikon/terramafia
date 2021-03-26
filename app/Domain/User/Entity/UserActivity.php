@@ -23,19 +23,19 @@ class UserActivity
     public DateTimeImmutable $createdAt;
 
     /**
-     * @var DateTimeImmutable Время обновления.
+     * @var DateTimeImmutable|null Время обновления.
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    public DateTimeImmutable $updatedAt;
+    public ?DateTimeImmutable $updatedAt;
 
     /**
-     * @var DateTimeImmutable Время удаления.
+     * @var DateTimeImmutable|null Время удаления.
      *
      * @ORM\Column(type="datetime_immutable", nullable=true)
      */
-    public DateTimeImmutable $deletedAt;
+    public ?DateTimeImmutable $deletedAt;
 
     /**
      * @var bool Флаг состояния - пользователь подтвержден (не является роботом).
@@ -58,6 +58,8 @@ class UserActivity
 
     public function __construct()
     {
+        $this->updatedAt = null;
+        $this->deletedAt = null;
         $this->isConfirmed = false;
         $this->isBanned = false;
 
@@ -88,9 +90,9 @@ class UserActivity
     }
 
     /**
-     * @return DateTimeImmutable
+     * @return DateTimeImmutable|null
      */
-    public function getDeletedAt(): DateTimeImmutable
+    public function getDeletedAt(): ?DateTimeImmutable
     {
         return $this->deletedAt;
     }

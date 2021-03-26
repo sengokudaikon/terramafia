@@ -11,7 +11,10 @@ use App\Exceptions\UserNotFoundException;
 use App\Helpers\DateTimeUtil;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
 class PasswordReminderService
@@ -27,11 +30,6 @@ class PasswordReminderService
     private PasswordResetTokenRepository $passwordResetTokenRepository;
 
     /**
-     * @var EntityManagerInterface Менеджер сущностей.
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
      * @var UserRepository Репозиторий пользователей.
      */
     private UserRepository $userRepository;
@@ -40,16 +38,13 @@ class PasswordReminderService
      * PasswordReminderService constructor.
      *
      * @param PasswordResetTokenRepository $passwordResetTokenRepository
-     * @param EntityManagerInterface $entityManager
      * @param UserRepository $userRepository
      */
     public function __construct(
         PasswordResetTokenRepository $passwordResetTokenRepository,
-        EntityManagerInterface $entityManager,
         UserRepository $userRepository
     ) {
         $this->passwordResetTokenRepository = $passwordResetTokenRepository;
-        $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
     }
 
@@ -58,8 +53,8 @@ class PasswordReminderService
      *
      * @param string $email
      * @throws UserNotFoundException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     * @throws ORMException
+     * @throws ORMInvalidArgumentException
      */
     public function remindForUser(string $email): void
     {
@@ -83,15 +78,14 @@ class PasswordReminderService
      *
      * @param User $user
      * @return PasswordResetToken
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     * @throws ORMException
+     * @throws ORMInvalidArgumentException
      */
     public function makeToken(User $user): PasswordResetToken
     {
         $token = md5(Str::random());
         $passwordResetToken = new PasswordResetToken($user, $token);
         $this->passwordResetTokenRepository->add($passwordResetToken);
-        $this->entityManager->flush();
 
         return $passwordResetToken;
     }
@@ -101,7 +95,7 @@ class PasswordReminderService
      *
      * @param PasswordResetToken $passwordResetToken
      * @return bool
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function isExpiredResetPassword(PasswordResetToken $passwordResetToken): bool
     {
@@ -114,9 +108,11 @@ class PasswordReminderService
      * Возвращает пользователя по токену подтверждения.
      *
      * @param string $token
+     *
      * @return User
      * @throws TokenExpiredException
-     * @throws \InvalidArgumentException
+     * @throws \Doctrine\ORM\EntityNotFoundException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getUserByToken(string $token): User
     {
@@ -133,11 +129,13 @@ class PasswordReminderService
      * Удаляет токены пользователя.
      *
      * @param User $user
+     *
+     * @throws ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function deleteTokensByUser(User $user)
+    public function deleteTokensByUser(User $user): void
     {
         $this->passwordResetTokenRepository->deleteByUser($user);
-        $this->entityManager->flush();
     }
 
     /**
@@ -145,6 +143,8 @@ class PasswordReminderService
      *
      * @param User $user
      * @return PasswordResetToken|null
+     * @throws \Doctrine\ORM\EntityNotFoundException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findByUser(User $user): ?PasswordResetToken
     {

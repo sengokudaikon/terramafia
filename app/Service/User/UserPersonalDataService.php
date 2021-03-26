@@ -19,7 +19,7 @@ class UserPersonalDataService
         $this->userService = $userService;
     }
 
-    public function addPersonalData(User $user, string $firstName, string $lastName, string $patronymic, string $birthdate, string $gender)
+    public function addPersonalData(User $user, string $firstName, string $lastName, string $patronymic, string $birthdate, string $gender): void
     {
         $personalData = new UserPersonal(
             $user,

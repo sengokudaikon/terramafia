@@ -72,7 +72,7 @@ class SocialProvider
      */
     public static function validateProvider(string $provider): void
     {
-        if (!in_array($provider, self::PROVIDERS)) {
+        if (!in_array($provider, self::PROVIDERS, true)) {
             throw new InvalidArgumentException(
                 sprintf('Провайдер %s запрещен для аутентификации.', $provider)
             );

@@ -22,7 +22,7 @@ class UserListResource extends JsonResource
     /**
      * {@inheritDoc}
      */
-    public function toArray($request = null)
+    public function toArray($request = null): array
     {
         $items = [];
 
