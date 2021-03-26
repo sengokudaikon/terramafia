@@ -4,6 +4,7 @@ namespace App\Service\User;
 
 use App\Domain\User\Entity\User;
 use App\Domain\User\Entity\UserSocialAccount;
+use App\Domain\User\Entity\VO\Role;
 use App\Domain\User\Entity\VO\SocialProvider;
 use App\Domain\User\Repository\UserRepository;
 use App\Domain\User\Repository\UserSocialAccountRepository;
@@ -12,8 +13,11 @@ use App\Service\User\Social\SocialAccount;
 use App\Service\User\Social\SocialAccountManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Laravel\Socialite\Facades\Socialite;
+use RuntimeException;
 
 class SocialAccountService
 {
@@ -46,41 +50,25 @@ class SocialAccountService
     private UserRepository $userRepository;
 
     /**
-     * @var UserService Сервис пользователей.
-     */
-    private UserService $userService;
-
-    /**
      * @var PasswordReminderService Сервис востановления паролей.
      */
     private PasswordReminderService $passwordService;
-
-    /**
-     * @var EntityManagerInterface Менеджер сущностей.
-     */
-    private EntityManagerInterface $entityManager;
 
     /**
      * Конструктор сервиса соц. аккаунтов.
      *
      * @param UserSocialAccountRepository $userSocialAccountRepository
      * @param UserRepository              $userRepository
-     * @param UserService                  $userService
      * @param PasswordReminderService      $passwordService
-     * @param EntityManagerInterface       $entityManager
      */
     public function __construct(
         UserSocialAccountRepository $userSocialAccountRepository,
         UserRepository $userRepository,
-        UserService $userService,
         PasswordReminderService $passwordService,
-        EntityManagerInterface $entityManager
     ) {
         $this->userSocialAccountRepository = $userSocialAccountRepository;
-        $this->userService = $userService;
         $this->passwordService = $passwordService;
         $this->userRepository = $userRepository;
-        $this->entityManager = $entityManager;
     }
 
 
@@ -133,9 +121,9 @@ class SocialAccountService
      * @param string $provider
      * @return User
      * @throws ORMException
-     * @throws \Doctrine\ORM\ORMInvalidArgumentException
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @throws ORMInvalidArgumentException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function getUserByProvider(string $provider): User
     {
@@ -170,15 +158,21 @@ class SocialAccountService
      */
     private function makeUser(SocialAccount $socialAccount): User
     {
-        $user = $this->userService->addPlayer(
+        $user = new User(
+            $socialAccount->getName(),
             $socialAccount->getEmail(),
             Str::random(20),
-            $socialAccount->getName(),
+            new Role(Role::PLAYER)
         );
+
+        $user->activate();
+        $user->getActivity()->confirm();
 
         if ($socialAccount->getEmail()) {
             $user->getActivity()->verifyEmail();
         }
+
+        $this->userRepository->add($user);
         //TODO напомнить пользователю сбросить пароль
         $this->passwordService->remindForUser($socialAccount->getEmail());
         //TODO напомнить пользователю ввести игровой ник
@@ -193,8 +187,8 @@ class SocialAccountService
      * @param bool $isNewUser
      * @return UserSocialAccount
      * @throws ORMException
-     * @throws \Doctrine\ORM\ORMInvalidArgumentException
-     * @throws \InvalidArgumentException
+     * @throws ORMInvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function createSocialAccountForUser(
         User $user,
@@ -204,7 +198,6 @@ class SocialAccountService
         $userSocialAccount = new UserSocialAccount($user, $socialAccount->getProvider(), $socialAccount->getId());
         $userSocialAccount->setCredential($isNewUser);
         $this->userSocialAccountRepository->add($userSocialAccount);
-        $this->entityManager->flush();
 
         return $userSocialAccount;
     }

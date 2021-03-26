@@ -11,7 +11,15 @@ abstract class BaseRepository
     /**
      * @var EntityManager
      */
-    protected EntityManager $entityManager;
+    protected $entityManager;
+
+    /**
+     * @return EntityManager
+     */
+    public function getEntityManager(): EntityManager
+    {
+        return $this->entityManager;
+    }
 
     public function setEntityManager(EntityManager $entityManager): void
     {

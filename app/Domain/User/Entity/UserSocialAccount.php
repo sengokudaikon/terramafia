@@ -4,6 +4,7 @@ namespace App\Domain\User\Entity;
 
 use App\Domain\User\Entity\VO\SocialProvider;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 /**
  * Социальный аккаунт пользователя.
@@ -60,7 +61,7 @@ class UserSocialAccount
      * @param User $user
      * @param string $providerName
      * @param string $providerAccountId
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(User $user, string $providerName, string $providerAccountId)
     {

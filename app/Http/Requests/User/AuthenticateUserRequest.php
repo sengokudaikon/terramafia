@@ -43,7 +43,7 @@ class AuthenticateUserRequest extends FormRequest
      *
      * @return string[]
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'email' => 'bail|required|string|email',
@@ -54,7 +54,7 @@ class AuthenticateUserRequest extends FormRequest
     /**
      * {@inheritDoc}
      */
-    public function filters()
+    public function filters(): array
     {
         return [
             'email' => 'trim'

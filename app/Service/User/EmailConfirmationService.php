@@ -33,25 +33,17 @@ class EmailConfirmationService
     private EmailConfirmationRepository $emailConfirmationRepository;
 
     /**
-     * @var EntityManagerInterface Менеджер сущностей.
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
      * Конструктор сервиса подтвержденных email пользователей.
      *
      * @param UserRepository $userRepository
      * @param EmailConfirmationRepository $emailConfirmationRepository
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         UserRepository $userRepository,
-        EmailConfirmationRepository $emailConfirmationRepository,
-        EntityManagerInterface $entityManager
+        EmailConfirmationRepository $emailConfirmationRepository
     ) {
         $this->userRepository = $userRepository;
         $this->emailConfirmationRepository = $emailConfirmationRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -61,6 +53,7 @@ class EmailConfirmationService
      * @param string $email
      *
      * @return string
+     * @throws ORMException
      */
     public function makeToken(User $user, string $email): string
     {
@@ -107,7 +100,8 @@ class EmailConfirmationService
      *
      * @return EmailConfirmationToken
      * @throws TokenExpiredException
-     * @throws InvalidArgumentException
+     * @throws \Doctrine\ORM\EntityNotFoundException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     private function getToken(string $token): EmailConfirmationToken
     {
@@ -145,7 +139,6 @@ class EmailConfirmationService
     public function deleteTokensByUser(User $user): void
     {
         $this->emailConfirmationRepository->deleteByUser($user);
-        $this->entityManager->flush();
     }
 
     /**
@@ -155,7 +148,8 @@ class EmailConfirmationService
      *
      * @return User
      * @throws TokenExpiredException
-     * @throws InvalidArgumentException
+     * @throws \Doctrine\ORM\EntityNotFoundException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getUserByToken(string $token): User
     {

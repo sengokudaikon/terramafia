@@ -14,7 +14,7 @@ class Version20210325221129 extends AbstractMigration
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE users_user CHANGE uuid uuid CHAR(36) NOT NULL, CHANGE role role VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE users_user CHANGE uuid uuid CHAR(36) NOT NULL, CHANGE password password VARCHAR(255) NOT NULL, CHANGE role role VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE users_user_personal CHANGE gender gender VARCHAR(255) NOT NULL');
     }
 

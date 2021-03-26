@@ -3,6 +3,7 @@
 namespace App\Service\User\Social;
 
 use App\Domain\User\Entity\VO\SocialProvider;
+use InvalidArgumentException;
 use Laravel\Socialite\Facades\Socialite;
 use RuntimeException;
 
@@ -23,7 +24,7 @@ class SocialAccountManager
      *
      * @param string $provider
      * @throws RuntimeException
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $provider)
     {
@@ -43,7 +44,7 @@ class SocialAccountManager
      * Валидация провайдера авторизации.
      *
      * @throws RuntimeException
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function validateProvider(): void
     {

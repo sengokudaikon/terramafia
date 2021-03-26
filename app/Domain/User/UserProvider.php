@@ -28,9 +28,8 @@ class UserProvider extends ServiceProvider
      * Boot the application events.
      *
      * @return void
-     * @throws \Doctrine\DBAL\DBALException
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerDoctrineTypes();
     }
@@ -39,7 +38,6 @@ class UserProvider extends ServiceProvider
      * Register the service provider.
      *
      * @return void
-     * @throws \Doctrine\DBAL\DBALException
      */
     public function register()
     {
@@ -51,7 +49,6 @@ class UserProvider extends ServiceProvider
     /**
      * Регистрация типов полей для Doctrine.
      *
-     * @throws \Doctrine\DBAL\DBALException
      */
     private function registerDoctrineTypes(): void
     {
@@ -118,7 +115,7 @@ class UserProvider extends ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [];
     }

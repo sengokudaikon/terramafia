@@ -13,7 +13,12 @@ use App\Exceptions\InvalidPasswordException;
 use App\Exceptions\UserNotFoundException;
 use App\Helpers\SecurityHashHelper;
 use App\Service\Auth;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Illuminate\Support\Facades\Hash;
+use InvalidArgumentException;
+use RuntimeException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService
@@ -70,15 +75,17 @@ class UserService
      */
     public function addPlayer(string $email, string $password, ?string $playerName): User
     {
-        $user = $this->findByEmail($email);
         $hashedPassword = self::hashPassword($password);
 
-        if ($user) {
-            $user->setPassword($hashedPassword);
-            $this->userRepository->update($user);
-        } elseif (!$user->getActivity()) {
-            $user->activate();
-        } else {
+        try {
+            $user = $this->findByEmail($email);
+            if ($user) {
+                $user->setPassword($hashedPassword);
+                $this->userRepository->update($user);
+            } elseif (!$user->getActivity()) {
+                $user->activate();
+            }
+        } catch (\Exception $exception) {
             $user = new User(
                 $playerName,
                 $email,
@@ -91,7 +98,7 @@ class UserService
             $this->userRepository->add($user);
         }
 
-        event(new UserCreatedEvent($user->getId()));
+        //event(new UserCreatedEvent($user->getId()));
 
         return $user;
     }
@@ -208,9 +215,12 @@ class UserService
      *
      * @param string $token
      * @param string $newPassword
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \InvalidArgumentException
-     * @throws \Tymon\JWTAuth\Exceptions\TokenExpiredException
+     *
+     * @throws ORMException
+     * @throws TokenExpiredException
+     * @throws \Doctrine\ORM\EntityNotFoundException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function changePasswordWithResetToken(string $token, string $newPassword): void
     {
@@ -226,10 +236,10 @@ class UserService
      *
      * @param string $provider
      * @return string
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\ORMInvalidArgumentException
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @throws ORMException
+     * @throws ORMInvalidArgumentException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function authWithSocialProvider(string $provider): string
     {
@@ -259,7 +269,7 @@ class UserService
      * @param string $newPassword
      *
      * @throws InvalidPasswordException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ORMException
      */
     public function changePasswordFromAccount(string $userId, string $currentPassword, string $newPassword): void
     {
@@ -282,10 +292,10 @@ class UserService
      *
      * @throws EmailAlreadyExistsException
      * @throws InvalidPasswordException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     * @throws ORMException
+     * @throws ORMInvalidArgumentException
      */
-    public function changeEmailFromAccount(string $userId, string $currentPassword, string $newEmail)
+    public function changeEmailFromAccount(string $userId, string $currentPassword, string $newEmail): void
     {
         $user = $this->userRepository->findUserByUuid($userId);
 

@@ -6,6 +6,8 @@ use App\Domain\User\Entity\PasswordResetToken;
 use App\Domain\User\Entity\User;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 
 class PasswordResetTokenRepository extends BaseRepository
 {
@@ -13,13 +15,13 @@ class PasswordResetTokenRepository extends BaseRepository
      * Добавление нового токена восстановления.
      *
      * @param PasswordResetToken $passwordResetToken
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     * @throws ORMException
+     * @throws ORMInvalidArgumentException
      */
     public function add(PasswordResetToken $passwordResetToken): void
     {
-        $this->entityManager->persist($passwordResetToken);
-        $this->entityManager->flush($passwordResetToken);
+        $this->getEntityManager()->persist($passwordResetToken);
+        $this->getEntityManager()->flush($passwordResetToken);
     }
 
     /**
@@ -33,7 +35,7 @@ class PasswordResetTokenRepository extends BaseRepository
      */
     public function findByToken(string $token): PasswordResetToken
     {
-        $queryBuilder = $this->entityManager
+        $queryBuilder = $this->getEntityManager()
             ->createQueryBuilder();
         $query = $queryBuilder
             ->select('pass')
@@ -57,10 +59,13 @@ class PasswordResetTokenRepository extends BaseRepository
      * Удаление токена пользователя.
      *
      * @param User $user
+     *
+     * @throws ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function deleteByUser(User $user): void
     {
-        $queryBuilder = $this->entityManager
+        $queryBuilder = $this->getEntityManager()
             ->createQueryBuilder();
         $query = $queryBuilder
             ->select('pass')
@@ -74,12 +79,14 @@ class PasswordResetTokenRepository extends BaseRepository
         foreach ($tokens as $passwordResetToken) {
             $this->remove($passwordResetToken);
         }
+
+        $this->getEntityManager()->flush();
     }
 
     private function remove(PasswordResetToken $passwordResetToken): void
     {
-        $this->entityManager->remove($passwordResetToken);
-        $this->entityManager->flush($passwordResetToken);
+        $this->getEntityManager()->remove($passwordResetToken);
+        $this->getEntityManager()->flush($passwordResetToken);
     }
 
     /**
@@ -93,7 +100,7 @@ class PasswordResetTokenRepository extends BaseRepository
      */
     public function findByUser(User $user): PasswordResetToken
     {
-        $queryBuilder = $this->entityManager
+        $queryBuilder = $this->getEntityManager()
             ->createQueryBuilder();
         $query = $queryBuilder
             ->select('pass')

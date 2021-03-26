@@ -81,7 +81,7 @@ class User implements JWTSubject, Authenticatable
     /**
      * @var string Пароль (hash).
      *
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(type="string", length=255)
      */
     private string $password;
 
@@ -282,12 +282,13 @@ class User implements JWTSubject, Authenticatable
     /**
      * {@inheritDoc}
      *
-     * @param string $rememberToken
+     * @param string $value
+     *
      * @return $this
      */
-    public function setRememberToken($rememberToken): User
+    public function setRememberToken($value): User
     {
-        $this->rememberToken = $rememberToken;
+        $this->rememberToken = $value;
 
         return $this;
     }

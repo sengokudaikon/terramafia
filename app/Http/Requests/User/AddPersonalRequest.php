@@ -61,7 +61,7 @@ class AddPersonalRequest extends FormRequest
      *
      * @return string[]
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'firstName' => 'bail|required|string|min:1',

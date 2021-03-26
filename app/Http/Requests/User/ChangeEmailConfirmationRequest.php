@@ -25,7 +25,7 @@ class ChangeEmailConfirmationRequest extends FormRequest
      *
      * @return string[]
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'confirmationToken' => 'required'

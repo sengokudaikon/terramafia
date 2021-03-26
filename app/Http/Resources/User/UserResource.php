@@ -17,13 +17,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          example="GWOIOISAmWFS"
  *     ),
  *     @OA\Property(
- *          property="name",
- *          title="Имя.",
- *          type="string",
- *          maxLength=32,
- *          example="Иван"
- *     ),
- *     @OA\Property(
  *          property="playerName",
  *          title="Игровое имя пользователя.",
  *          type="string",
@@ -80,7 +73,7 @@ class UserResource extends JsonResource
     /**
      * {@inheritDoc}
      */
-    public function toArray($request = null)
+    public function toArray($request = null): array
     {
         $personalInfo = $this->getPersonal();
 
