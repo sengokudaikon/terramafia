@@ -12,7 +12,7 @@ class GenderType extends Type
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return Gender::class;
     }
@@ -20,9 +20,9 @@ class GenderType extends Type
     /**
      * {@inheritDoc}
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getVarcharTypeDeclarationSQL($fieldDeclaration);
+        return $platform->getVarcharTypeDeclarationSQL($column);
     }
 
     /**

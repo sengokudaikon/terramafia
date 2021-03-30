@@ -20,8 +20,8 @@ class EmailConfirmationRepository extends BaseRepository
      */
     public function add(EmailConfirmationToken $emailConfirmationToken): void
     {
-        $this->entityManager->persist($emailConfirmationToken);
-        $this->entityManager->flush($emailConfirmationToken);
+        $this->getEntityManager()->persist($emailConfirmationToken);
+        $this->getEntityManager()->flush($emailConfirmationToken);
     }
 
     /**
@@ -35,7 +35,7 @@ class EmailConfirmationRepository extends BaseRepository
      */
     public function findByToken(string $token): EmailConfirmationToken
     {
-        $queryBuilder = $this->entityManager
+        $queryBuilder = $this->getEntityManager()
             ->createQueryBuilder();
         $query = $queryBuilder
             ->select('email')
@@ -64,7 +64,7 @@ class EmailConfirmationRepository extends BaseRepository
      */
     public function deleteByUser(User $user): void
     {
-        $queryBuilder = $this->entityManager
+        $queryBuilder = $this->getEntityManager()
             ->createQueryBuilder();
         $query = $queryBuilder
             ->select('email')
@@ -82,6 +82,8 @@ class EmailConfirmationRepository extends BaseRepository
         } else {
             throw new EntityNotFoundException("Пользователь {$user->getExternalisedUuid()} не имеет токенов подтверждения почты");
         }
+
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -93,7 +95,7 @@ class EmailConfirmationRepository extends BaseRepository
      */
     public function remove(EmailConfirmationToken $emailConfirmationToken): void
     {
-        $this->entityManager->remove($emailConfirmationToken);
-        $this->entityManager->flush($emailConfirmationToken);
+        $this->getEntityManager()->remove($emailConfirmationToken);
+        $this->getEntityManager()->flush($emailConfirmationToken);
     }
 }

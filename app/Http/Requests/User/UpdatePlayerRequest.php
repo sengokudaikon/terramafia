@@ -25,7 +25,7 @@ class UpdatePlayerRequest extends FormRequest
      *
      * @return string[]
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'playerName' => 'bail|required|string'

@@ -5,7 +5,15 @@ namespace App\Domain\User\Repository;
 use App\Domain\User\Entity\User;
 use App\Exceptions\UserNotFoundException;
 use App\Helpers\UuidExternaliser;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
+/**
+ * Class UserRepository
+ * @method findOneBy(array $criteria, array $orderBy = null)
+ * @package App\Domain\User\Repository
+ */
 class UserRepository extends BaseRepository
 {
     /**
@@ -13,27 +21,33 @@ class UserRepository extends BaseRepository
      */
     protected UuidExternaliser $uuidDecoder;
 
+    public function __construct(UuidExternaliser $uuidDecoder, EntityManagerInterface $entityManager)
+    {
+        $this->uuidDecoder = $uuidDecoder;
+        $this->entityManager = $entityManager;
+    }
+
     public function add(User $user): void
     {
-        $this->entityManager->persist($user);
-        $this->entityManager->flush($user);
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush($user);
     }
 
     public function update(User $user): void
     {
-        $this->entityManager->persist($user);
-        $this->entityManager->flush($user);
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush($user);
     }
 
     public function remove(User $user): void
     {
-        $this->entityManager->remove($user);
-        $this->entityManager->flush($user);
+        $this->getEntityManager()->remove($user);
+        $this->getEntityManager()->flush($user);
     }
 
     public function findUserByUuid(string $userId): User
     {
-        $queryBuilder = $this->entityManager
+        $queryBuilder = $this->getEntityManager()
             ->createQueryBuilder();
 
         $query = $queryBuilder
@@ -52,9 +66,9 @@ class UserRepository extends BaseRepository
         return $user;
     }
 
-    public function checkEmailExists(string $user_id, string $email): bool
+    public function checkEmailExists(string $userId, string $email): bool
     {
-        $query = (int)$this->entityManager
+        $query = (int)$this->getEntityManager()
             ->createQueryBuilder()
             ->select("COUNT(user)")
             ->from(User::class, 'user')
@@ -62,7 +76,7 @@ class UserRepository extends BaseRepository
             ->setParameters(
                 [
                     'email' => mb_strtolower($email),
-                    'user_id' => $user_id
+                    'user_id' => $userId
                 ]
             )
             ->getQuery()
@@ -73,7 +87,7 @@ class UserRepository extends BaseRepository
 
     public function findUserByEmail(string $userEmail): User
     {
-        $queryBuilder = $this->entityManager
+        $queryBuilder = $this->getEntityManager()
             ->createQueryBuilder();
 
         $query = $queryBuilder
@@ -95,7 +109,7 @@ class UserRepository extends BaseRepository
 
     public function findAllUsers(): array
     {
-        $queryBuilder = $this->entityManager
+        $queryBuilder = $this->getEntityManager()
             ->createQueryBuilder();
 
         $queryBuilder->select('user')
@@ -106,7 +120,7 @@ class UserRepository extends BaseRepository
 
     public function findUsersByIds(array $ids): array
     {
-        $qb = $this->entityManager->createQueryBuilder();
+        $qb = $this->getEntityManager()->createQueryBuilder();
 
         $qb
             ->select('u')

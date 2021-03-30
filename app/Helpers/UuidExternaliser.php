@@ -25,7 +25,7 @@ class UuidExternaliser
             return Uuid::fromString(
                 array_reduce(
                     [20, 16, 12, 8],
-                    function ($uuid, $offset) {
+                    static function ($uuid, $offset) {
                         return substr_replace($uuid, '-', $offset, 0);
                     },
                     str_pad(

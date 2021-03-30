@@ -93,7 +93,7 @@ abstract class Controller extends BaseController
      * @param string $message
      * @return JsonResponse
      */
-    protected function respondWithToken(string $token, string $message)
+    protected function respondWithToken(string $token, string $message): JsonResponse
     {
         /** @var User $user */
         $user = Auth::user();

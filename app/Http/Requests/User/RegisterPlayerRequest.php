@@ -42,7 +42,7 @@ class RegisterPlayerRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'email' => 'bail|required|string|email|max:129',
@@ -54,7 +54,7 @@ class RegisterPlayerRequest extends FormRequest
     /**
      * {@inheritDoc}
      */
-    public function filters()
+    public function filters(): array
     {
         return [
             'playerName' => 'trim|strip_tags',
