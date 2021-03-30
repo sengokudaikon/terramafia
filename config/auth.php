@@ -69,6 +69,11 @@ return [
             'driver' => 'doctrine',
             'model' => App\Domain\User\Entity\User::class
         ],
+
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
     ],
 
     /*

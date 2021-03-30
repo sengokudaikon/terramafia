@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Contracts\Auth\Authenticatable;
+use JetBrains\PhpStorm\ArrayShape;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -156,6 +157,7 @@ class User implements JWTSubject, Authenticatable
 
         $this->socialAccounts = new ArrayCollection();
         $this->permissions = new ArrayCollection();
+        $this->personal = null;
     }
 
 //    public static function signUp(string $playerName, string $email, string $password,  Role $role): User
@@ -394,5 +396,29 @@ class User implements JWTSubject, Authenticatable
         $this->personal = $personal;
 
         return $this;
+    }
+
+    #[ArrayShape(['id'         => "string",
+                  'playerName' => "null|string",
+                  'email'      => "null|string",
+                  'firstName'  => "null|string",
+                  'lastName'   => "null|string",
+                  'patronymic' => "null|string",
+                  'birthday'   => "null|string",
+                  'gender'     => "null|string"
+    ])] public function toJson(): array
+    {
+        $personalInfo = $this->getPersonal();
+
+        return [
+            'id' => $this->getExternalisedUuid(),
+            'playerName' => $this->getPlayerName(),
+            'email' => $this->getEmail(),
+            'firstName' =>  $personalInfo ? $personalInfo->getFirstName() : null ,
+            'lastName' => $personalInfo ? $personalInfo->getLastName() : null,
+            'patronymic' => $personalInfo ? $personalInfo->getPatronymic() : null,
+            'birthday' => $personalInfo ?  $personalInfo->getBirthday()->format('Y-m-d') : null,
+            'gender' =>$personalInfo ? $personalInfo->getGender()->__toString() : null,
+        ];
     }
 }

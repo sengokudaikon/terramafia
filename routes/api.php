@@ -53,26 +53,26 @@ Route::group(['namespace' => 'Api\V1', 'middleware' => 'api', 'prefix' => 'v1'],
                 Route::get('/', [UserController::class, 'getPlayerList'])->name('api.v1.users.list');
                 Route::post('register', [UserController::class, 'registerPlayer'])
                     ->name('api.v1.users.register');
-                Route::get('{uuid}', [UserController::class, 'getByUuid'])->name('api.v1.users.get');
+                Route::get('{uuid}', [UserController::class, 'getPlayerByUuid'])->name('api.v1.users.get');
                 Route::delete('{uuid}', [UserController::class, 'deletePlayer'])->name('api.v1.users.delete');
             }
         );
 
         // Account
-        Route::group(['prefix' => 'users/me'], function () {
+        Route::group(['prefix' => 'me'], function () {
             Route::group(['middleware' => 'auth'], function () {
-                Route::get('/', [UserController::class, 'getMe'])->name('api.v1.user.me.get');
-                Route::put('/', [UserController::class, 'updatePlayer'])->name('api.v1.user.me.update');
-                Route::post('/', [UserController::class, 'addPersonalInfo'])->name('api.v1.user.me.add');
+                Route::get('/', [UserController::class, 'getMe'])->name('api.v1.me.get');
+                Route::put('/', [UserController::class, 'updatePlayer'])->name('api.v1.me.update');
+                Route::post('/', [UserController::class, 'addPersonalInfo'])->name('api.v1.me.add');
 
                 Route::post('password', [UserController::class, 'changePassword'])
-                    ->name('api.v1.users.me.password.change');
-                Route::put('email', [UserController::class, 'changeEmail'])
-                    ->name('api.v1.users.me.email.change');
+                    ->name('api.v1.me.password.change');
             });
         });
 
-        Route::post('users/me/email/confirmation', [UserController::class, 'confirmEmail'])
+        Route::put('me/email/', [UserController::class, 'sendEmailVerification'])
+            ->name('api.v1.users.me.email.change');
+        Route::post('me/email/confirmation', [UserController::class, 'confirmEmail'])
             ->name('api.v1.users.me.email.confirmation');
     });
 });

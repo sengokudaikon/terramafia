@@ -4,7 +4,6 @@ namespace App\Domain\User\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Ramsey\Uuid\Uuid;
 
 abstract class BaseRepository
 {
@@ -26,7 +25,7 @@ abstract class BaseRepository
         $this->entityManager = $entityManager;
     }
 
-    protected function find(string $entityClass, Uuid $id): ?object
+    protected function find(string $id, ?string $entityClass = null): ?object
     {
         return $this->entityManager->find($entityClass, $id);
     }

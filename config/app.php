@@ -95,7 +95,7 @@ return [
     | the language folders that are provided through your application.
     |
     */
-
+    
     'fallback_locale' => 'ru',
 
     /*
@@ -108,7 +108,7 @@ return [
     | localized telephone numbers, street address information and more.
     |
     */
-
+    
     'faker_locale' => 'ru_RU',
 
     /*

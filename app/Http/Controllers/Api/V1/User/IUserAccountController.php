@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1\User;
 
 use App\Http\Requests\User\AddPersonalRequest;
 use App\Http\Requests\User\ChangeEmailConfirmationRequest;
-use App\Http\Requests\User\ChangeEmailRequest;
+use App\Http\Requests\User\SendEmailRequest;
 use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Requests\User\UpdatePlayerRequest;
 use App\Service\User\EmailConfirmationService;
@@ -18,7 +18,7 @@ interface IUserAccountController
      * Получение данных текущего пользователя.
      *
      * @OA\Get(
-     *     path="/api/v1/users/me",
+     *     path="/api/v1/me",
      *     tags={"Account"},
      *     summary="Персональные данные текущего пользователя.",
      *     security={{"bearerAuth": {}}},
@@ -32,14 +32,16 @@ interface IUserAccountController
      *          description="Требуется авторизация."
      *     )
      * )
+     * @param UserService $userService
+     *
      * @return JsonResponse
      */
-    public function getMe(): JsonResponse;
+    public function getMe(UserService $userService): JsonResponse;
 
 
     /**
      * @OA\Put(
-     *     path="/api/v1/users/me",
+     *     path="/api/v1/me",
      *     tags={"Account"},
      *     summary="Запрос обновит профиль пользователя",
      *     security={{"bearerAuth": {}}},
@@ -65,7 +67,7 @@ interface IUserAccountController
      * Подтверждение email пользователя по токену.
      *
      * @OA\Post(
-     *     path="/api/v1/users/me/email/confirmation",
+     *     path="/api/v1/me/email/confirmation",
      *     tags={"Account"},
      *     summary="Подтверждение email пользователя по токену",
      *     security={{"bearerAuth": {}}},
@@ -101,12 +103,11 @@ interface IUserAccountController
      * Изменяет email пользователя.
      *
      * @OA\Put(
-     *     path="/api/v1/users/me/email",
+     *     path="/api/v1/me/email",
      *     tags={"Account"},
-     *     summary="Изменение email авторизованного пользователя",
-     *     security={{"bearerAuth": {}}},
+     *     summary="Отправка заявки на потверждение email пользователя",
      *     @OA\RequestBody(
-     *          @OA\JsonContent(ref="#/components/schemas/ChangeEmailRequest")
+     *          @OA\JsonContent(ref="#/components/schemas/SendEmailRequest")
      *     ),
      *     @OA\Response(
      *          response="204",
@@ -115,24 +116,20 @@ interface IUserAccountController
      *     @OA\Response(
      *          response="422",
      *          description="Ошибка валидации или пароль введен неверно"
-     *     ),
-     *     @OA\Response(
-     *          response="401",
-     *          description="Требуется авторизация"
      *     )
      * )
-     * @param ChangeEmailRequest $request
-     * @param UserService        $userService
+     * @param SendEmailRequest $request
+     * @param UserService      $userService
      *
      * @return JsonResponse
      */
-    public function changeEmail(ChangeEmailRequest $request, UserService $userService): JsonResponse;
+    public function sendEmailVerification(SendEmailRequest $request, UserService $userService): JsonResponse;
 
     /**
      * Изменяет пароль пользоваетеля.
      *
      * @OA\Post(
-     *     path="/api/v1/users/me/password",
+     *     path="/api/v1/me/password",
      *     tags={"Account"},
      *     summary="Изменение пароля авторизованного пользователя",
      *     security={{"bearerAuth": {}}},
@@ -163,7 +160,7 @@ interface IUserAccountController
      * Добавление персональных данных пользователя.
      *
      * @OA\Post(
-     *     path="/api/v1/users/me",
+     *     path="/api/v1/me",
      *     tags={"Account"},
      *     summary="Запрос добавления  персональных данных пользователя",
      *     security={{"bearerAuth": {}}},

@@ -4,11 +4,17 @@ namespace App\Domain\User\Repository;
 
 use App\Domain\User\Entity\UserSocialAccount;
 use App\Exceptions\UserNotFoundException;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 
 class UserSocialAccountRepository extends BaseRepository
 {
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * Добавляет новый соц. аккаунт пользователя.
      *

@@ -1,10 +1,6 @@
 <?php
 
 namespace App\Http\Resources\User;
-
-use App\Domain\User\Entity\User;
-use Illuminate\Http\Resources\Json\JsonResource;
-
 /**
  * Класс JSON ответа с данными пользователя.
  *
@@ -66,26 +62,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *     )
  * )
  * @package App\Http\Resources\User
- * @mixin User
  */
-class UserResource extends JsonResource
+class UserResource
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function toArray($request = null): array
-    {
-        $personalInfo = $this->getPersonal();
-
-        return [
-            'id' => $this->getExternalisedUuid(),
-            'playerName' => $this->getPlayerName(),
-            'email' => $this->getEmail(),
-            'firstName' => $personalInfo ? null : $personalInfo->getFirstName(),
-            'lastName' => $personalInfo ? null : $personalInfo->getLastName(),
-            'patronymic' => $personalInfo ? null : $personalInfo->getPatronymic(),
-            'birthday' => $personalInfo ? null : $personalInfo->getBirthday()->format('Y-m-d'),
-            'gender' => $personalInfo ? null : $personalInfo->getGender()->__toString(),
-        ];
-    }
 }

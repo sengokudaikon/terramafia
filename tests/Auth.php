@@ -4,8 +4,8 @@ namespace Tests;
 
 use App\Domain\User\Entity\User;
 use App\Helpers\DI;
+use Database\Seeders\UsersTableSeeder;
 use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
-use UsersTableSeeder;
 
 /**
  * Трейт авторизации.
