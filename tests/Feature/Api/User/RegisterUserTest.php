@@ -64,8 +64,8 @@ class RegisterUserTest extends TestCase
             'playerName' => $this->getFaker()->firstName
         ]));
 
-        $response->assertStatus(Response::HTTP_SUCCESS);
-        $response->assertJsonStructure(['message']);
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonStructure(['uuid']);
     }
 
     /**

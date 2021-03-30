@@ -1,12 +1,13 @@
 <?php
+namespace Database\Seeders;
 
-use App\Domain\User\Repository\IUserRepository;
+use App\Domain\User\Repository\UserRepository;
 use Illuminate\Database\Seeder;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Entity\UserPermission;
 use Faker\Generator;
-use App\Domain\User\Repository\IUserPermissionRepository;
+use App\Domain\User\Repository\UserPermissionRepository;
 use App\Service\User\UserService;
 use App\Domain\User\Entity\VO\Role;
 use Illuminate\Support\Arr;
@@ -60,9 +61,9 @@ class UsersTableSeeder extends Seeder
     private EntityManagerInterface $entityManager;
 
     /**
-     * @var IUserRepository Репозиторий пользователей.
+     * @var UserRepository Репозиторий пользователей.
      */
-    private IUserRepository $userRepository;
+    private UserRepository $userRepository;
 
     /**
      * @var array|UserPermission[]
@@ -83,13 +84,13 @@ class UsersTableSeeder extends Seeder
      * UsersTableSeeder constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param IUserRepository $userRepository
-     * @param IUserPermissionRepository $permissionRepository
+     * @param UserRepository $userRepository
+     * @param UserPermissionRepository $permissionRepository
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        IUserRepository $userRepository,
-        IUserPermissionRepository $permissionRepository
+        UserRepository $userRepository,
+        UserPermissionRepository $permissionRepository
     ) {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;

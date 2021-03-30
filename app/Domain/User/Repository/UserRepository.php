@@ -6,25 +6,37 @@ use App\Domain\User\Entity\User;
 use App\Exceptions\UserNotFoundException;
 use App\Helpers\UuidExternaliser;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 /**
  * Class UserRepository
- * @method findOneBy(array $criteria, array $orderBy = null)
+ *
  * @package App\Domain\User\Repository
  */
 class UserRepository extends BaseRepository
 {
-    /**
-     * @var UuidExternaliser
-     */
-    protected UuidExternaliser $uuidDecoder;
-
-    public function __construct(UuidExternaliser $uuidDecoder, EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->uuidDecoder = $uuidDecoder;
         $this->entityManager = $entityManager;
+    }
+
+    /**
+     * Finds a single entity by a set of criteria.
+     *
+     * @param array      $criteria
+     * @param array|null $orderBy
+     *
+     * @return object|null The entity instance or NULL if the entity can not be found.
+     */
+    public function findOneBy(array $criteria, array $orderBy = null)
+    {
+        $persister = $this->getEntityManager()->getUnitOfWork()->getEntityPersister(User::class);
+
+        return $persister->load($criteria, null, null, [], null, 1, $orderBy);
+    }
+
+    public function find(string $id, string $entityClass = null): ?object
+    {
+        return parent::find($id, User::class);
     }
 
     public function add(User $user): void
@@ -54,7 +66,7 @@ class UserRepository extends BaseRepository
             ->select('user')
             ->from(User::class, 'user')
             ->where('user.uuid = :uuid')
-            ->setParameter('uuid', $this->uuidDecoder->internalise($userId))
+            ->setParameter('uuid', (new UuidExternaliser)->internalise($userId))
             ->getQuery();
 
         /** @var User $user */
@@ -115,7 +127,7 @@ class UserRepository extends BaseRepository
         $queryBuilder->select('user')
             ->from(User::class, 'user');
 
-        return $queryBuilder->getQuery()->getArrayResult();
+        return $queryBuilder->getQuery()->getResult();
     }
 
     public function findUsersByIds(array $ids): array

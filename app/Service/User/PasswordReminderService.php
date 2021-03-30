@@ -10,7 +10,6 @@ use App\Event\PasswordResetTokenCreatedEvent;
 use App\Exceptions\UserNotFoundException;
 use App\Helpers\DateTimeUtil;
 use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Illuminate\Support\Str;

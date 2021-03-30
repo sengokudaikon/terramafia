@@ -7,12 +7,10 @@ use App\Helpers\DI;
 use App\Http\Controllers\Controller as AbstractController;
 use App\Http\Requests\User\AddPersonalRequest;
 use App\Http\Requests\User\ChangeEmailConfirmationRequest;
-use App\Http\Requests\User\ChangeEmailRequest;
+use App\Http\Requests\User\SendEmailRequest;
 use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Requests\User\RegisterPlayerRequest;
 use App\Http\Requests\User\UpdatePlayerRequest;
-use App\Http\Resources\User\UserListResource;
-use App\Http\Resources\User\UserResource;
 use App\Service\Auth;
 use App\Service\User\EmailConfirmationService;
 use App\Service\User\UserPersonalDataService;
@@ -32,15 +30,16 @@ class UserController extends AbstractController implements IUserController, IUse
         return $this->successResponseCreated($user->getExternalisedUuid());
     }
 
-    public function getMe(): JsonResponse
+    public function getMe(UserService $userService): JsonResponse
     {
-        return $this->dataResponse((new UserResource(Auth::user()))->toArray());
+        $user = $userService->getById(Auth::uuid());
+        return $this->dataResponse($user->toJson());
     }
 
     public function getPlayerList(UserService $userService): JsonResponse
     {
         $users = $userService->getAll();
-        return $this->dataResponse((new UserListResource($users))->toArray());
+        return $this->dataResponse($users);
     }
 
     public function updatePlayer(UserService $userService, UpdatePlayerRequest $request): JsonResponse
@@ -49,14 +48,14 @@ class UserController extends AbstractController implements IUserController, IUse
         $user = Auth::user();
         $userService->updatePlayer($user, $request->input('playerName'));
 
-        return $this->dataResponse((new UserResource($user))->toArray());
+        return $this->dataResponse($user->toJson());
     }
 
     public function getPlayerByUuid(string $uuid, UserService $userService): JsonResponse
     {
         $user = $userService->getById($uuid);
 
-        return $this->dataResponse((new UserResource($user))->toArray());
+        return $this->dataResponse($user->toJson());
     }
 
     public function deletePlayer(string $uuid, UserService $userService): JsonResponse
@@ -80,15 +79,14 @@ class UserController extends AbstractController implements IUserController, IUse
         );
     }
 
-    public function changeEmail(ChangeEmailRequest $request, UserService $userService): JsonResponse
+    public function sendEmailVerification(SendEmailRequest $request, UserService $userService): JsonResponse
     {
-        $userService->changeEmailFromAccount(
-            Auth::uuid(),
+        $token = $userService->sendEmailVerification(
             $request->input('currentPassword'),
             $request->input('email')
         );
 
-        return $this->successResponseWithoutContent();
+        return $this->dataResponse(['confirmationToken' => $token]);
     }
 
     public function changePassword(ChangePasswordRequest $request, UserService $userService): JsonResponse
