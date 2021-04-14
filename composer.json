@@ -1,0 +1,83 @@
+{
+    "name": "sengokudaikon/terramafia",
+    "type": "project",
+    "description": "Mafia app built on the Laravel Framework.",
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.0",
+        "barryvdh/laravel-ide-helper": "^2.10",
+        "darkaonline/l5-swagger": "^8.0",
+        "elegantweb/sanitizer": "^1.0",
+        "fideloper/proxy": "^4.4",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/framework": "^8.12",
+        "laravel/nova": "~3.0",
+        "laravel/sanctum": "^2.9",
+        "laravel/scout": "^8.6",
+        "laravel/socialite": "^5.2",
+        "laravel/tinker": "^2.5",
+        "sentry/sentry-laravel": "^2.4",
+        "socialiteproviders/vkontakte": "^4.2",
+        "tailflow/enum": "^1.1"
+    },
+    "require-dev": {
+        "facade/ignition": "^2.5",
+        "fakerphp/faker": "^1.9.1",
+        "laravel/breeze": "^1.1",
+        "laravel/sail": "^1.0.1",
+        "mockery/mockery": "^1.4.2",
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^9.3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": {
+        "hooks": {
+            "type": "composer",
+            "url": "https://larapack.io"
+        },
+        "nova": {
+            "type": "github",
+            "url": "https://github.com/sengokudaikon/novaprivate"
+        }
+    }
+}
