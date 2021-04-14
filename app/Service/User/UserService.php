@@ -6,13 +6,13 @@ use App\Domain\User\Entity\User;
 use App\Domain\User\Entity\UserPersonal;
 use App\Domain\User\Entity\VO\Role;
 use App\Domain\User\Repository\UserRepository;
-use App\Event\UserCreatedEvent;
 use App\Exceptions\EmailAlreadyExistsException;
 use App\Exceptions\InvalidCredentialsException;
 use App\Exceptions\InvalidPasswordException;
 use App\Exceptions\UserNotFoundException;
 use App\Helpers\SecurityHashHelper;
 use App\Service\Auth;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Illuminate\Support\Facades\Hash;
@@ -288,28 +288,28 @@ class UserService
      *
      * @param string $userId
      * @param string $currentPassword
-     * @param string $newEmail
+     * @param string $email
      *
      * @throws EmailAlreadyExistsException
      * @throws InvalidPasswordException
      * @throws ORMException
      * @throws ORMInvalidArgumentException
      */
-    public function changeEmailFromAccount(string $userId, string $currentPassword, string $newEmail): void
+    public function sendEmailVerification(string $currentPassword, string $email): string
     {
-        $user = $this->userRepository->findUserByUuid($userId);
+        $user = $this->userRepository->findUserByEmail($email);
 
         if (!Hash::check($currentPassword, $user->getPassword())) {
             throw new InvalidPasswordException();
         }
 
-        if (!$this->canEmailRegister($newEmail)) {
-            throw new EmailAlreadyExistsException($newEmail);
+        if (!$this->canEmailRegister($email)) {
+            throw new EmailAlreadyExistsException($email);
         }
 
-        $token = $this->emailConfirmationService->makeToken($user, $newEmail);
+        $token = $this->emailConfirmationService->makeToken($user, $email);
 
-        //TODO: добавить отправку email
+        return $token;
     }
 
     /**
@@ -348,10 +348,13 @@ class UserService
     }
 
     /**
-     * @return User[]
+     * @return Collection|User[]
      */
-    public function getAll(): array
+    public function getAll()
     {
-        return $this->userRepository->findAllUsers();
+        return array_map(function($user){
+            return $user->toJson();
+        },
+            $this->userRepository->findAllUsers());
     }
 }

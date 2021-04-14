@@ -102,7 +102,7 @@ return [
     */
 
     'ttl' => env('JWT_TTL', 60),
-
+    'remember_me_ttl' => env('REMEMBER_ME_JWT_TTL', 43200),
     /*
     |--------------------------------------------------------------------------
     | Refresh time to live

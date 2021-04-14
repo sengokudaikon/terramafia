@@ -119,7 +119,7 @@
                 }
             }
         },
-        "/api/v1/users/me": {
+        "/api/v1/me": {
             "get": {
                 "tags": [
                     "Account"
@@ -213,7 +213,7 @@
                 ]
             }
         },
-        "/api/v1/users/me/email/confirmation": {
+        "/api/v1/me/email/confirmation": {
             "post": {
                 "tags": [
                     "Account"
@@ -260,18 +260,18 @@
                 ]
             }
         },
-        "/api/v1/users/me/email": {
+        "/api/v1/me/email": {
             "put": {
                 "tags": [
                     "Account"
                 ],
-                "summary": "Изменение email авторизованного пользователя",
-                "operationId": "App\\Http\\Controllers\\Api\\V1\\User\\IUserAccountController::changeEmail",
+                "summary": "Отправка заявки на потверждение email пользователя",
+                "operationId": "App\\Http\\Controllers\\Api\\V1\\User\\IUserAccountController::sendEmailVerification",
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ChangeEmailRequest"
+                                "$ref": "#/components/schemas/SendEmailRequest"
                             }
                         }
                     }
@@ -282,19 +282,11 @@
                     },
                     "422": {
                         "description": "Ошибка валидации или пароль введен неверно"
-                    },
-                    "401": {
-                        "description": "Требуется авторизация"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
-        "/api/v1/users/me/password": {
+        "/api/v1/me/password": {
             "post": {
                 "tags": [
                     "Account"
@@ -736,28 +728,6 @@
                 },
                 "type": "object"
             },
-            "ChangeEmailRequest": {
-                "title": "Запрос на изменение email",
-                "required": [
-                    "currentPassword",
-                    "email"
-                ],
-                "properties": {
-                    "currentPassword": {
-                        "title": "Текущий пароль",
-                        "description": "Класс валидации запроса на изменение email.",
-                        "type": "string",
-                        "example": "123456"
-                    },
-                    "email": {
-                        "title": "Электронный адрес",
-                        "description": "Класс валидации запроса на изменение email.",
-                        "type": "string",
-                        "example": "user@terra.ru"
-                    }
-                },
-                "type": "object"
-            },
             "ChangePasswordRequest": {
                 "title": "Запрос изменения пароля",
                 "required": [
@@ -838,6 +808,28 @@
                         "description": "Класс валидации запроса для установки нового пароля пользователя.",
                         "type": "string",
                         "minLength": 5
+                    }
+                },
+                "type": "object"
+            },
+            "SendEmailRequest": {
+                "title": "Запрос на изменение email",
+                "required": [
+                    "currentPassword",
+                    "email"
+                ],
+                "properties": {
+                    "currentPassword": {
+                        "title": "Текущий пароль",
+                        "description": "Класс валидации запроса на изменение email.",
+                        "type": "string",
+                        "example": "123456"
+                    },
+                    "email": {
+                        "title": "Электронный адрес",
+                        "description": "Класс валидации запроса на изменение email.",
+                        "type": "string",
+                        "example": "user@terra.ru"
                     }
                 },
                 "type": "object"

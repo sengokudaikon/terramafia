@@ -4,6 +4,7 @@ namespace App\Domain\User\Repository;
 
 use App\Domain\User\Entity\EmailConfirmationToken;
 use App\Domain\User\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
@@ -11,6 +12,11 @@ use Doctrine\ORM\ORMInvalidArgumentException;
 
 class EmailConfirmationRepository extends BaseRepository
 {
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * Добавление нового токена подтверждения.
      *

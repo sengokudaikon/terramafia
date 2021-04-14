@@ -11,7 +11,6 @@ use App\Domain\User\Repository\UserSocialAccountRepository;
 use App\Helpers\AppHelper;
 use App\Service\User\Social\SocialAccount;
 use App\Service\User\Social\SocialAccountManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Illuminate\Support\Str;
